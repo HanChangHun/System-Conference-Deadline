@@ -18,6 +18,8 @@
       --est-bg: #E1F3FE;  --est-ink: #1F6C9F;
       --soon-ink: #956400;
       --urgent-ink: #9F2F2D;
+      --grad-a: #FFFFFF;  --grad-b: #FBFBFA;  --grad-c: #ECEBE6;
+      --glow: rgba(255, 255, 255, 0.9);  --warm: rgba(149, 100, 0, 0.07);
       --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
       --mono: 'SF Mono', 'JetBrains Mono', 'Cascadia Mono', Consolas, monospace;
     }
@@ -32,6 +34,8 @@
         --est-bg: #1F3A52;  --est-ink: #9CCBF0;
         --soon-ink: #E8C36A;
         --urgent-ink: #F2A6A2;
+        --grad-a: #2D3339;  --grad-b: #24292E;  --grad-c: #1B1F23;
+        --glow: rgba(255, 255, 255, 0.06);  --warm: rgba(232, 195, 106, 0.09);
       }
     }
 
@@ -95,7 +99,14 @@
     footer .copy { color: var(--faint); margin-top: 14px; }
 
     /* Single-deadline view */
-    .big { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: 24px; }
+    /* Page colors with a static gradient: soft light at the top left, a faint warm glow at the bottom right. */
+    .big {
+      background:
+        radial-gradient(ellipse 70% 55% at 12% 0%, var(--glow), transparent 70%),
+        radial-gradient(ellipse 60% 55% at 92% 100%, var(--warm), transparent 70%),
+        linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 50%, var(--grad-c) 100%);
+      min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: 24px;
+    }
     .back { align-self: flex-start; font-size: 0.85rem; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
     .back:hover { border-bottom-color: var(--muted); }
     .big-inner { margin: auto; width: 100%; min-width: 0; max-width: 960px; text-align: center; padding: 32px 0 48px; }
