@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Full-paper deadlines of real-time, embedded and systems conferences with a BK21+ IF, with a live countdown in KST.">
+  <meta name="description" content="Paper deadlines of the real-time, embedded and systems conferences I keep track of, with a live countdown in KST.">
   <meta name="theme-color" content="#FBFBFA" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#24292E" media="(prefers-color-scheme: dark)">
   <title>Systems Paper Deadlines</title>
@@ -103,8 +103,9 @@
   <div class="wrap">
     <header>
       <h1>Systems paper deadlines</h1>
-      <p class="lede">Full-paper deadlines of real-time, embedded and systems conferences that have a BK21+ IF in
-        <a href="https://gist.github.com/Pusnow/6eb933355b5cb8d31ef1abcb3c3e1206">Pusnow&rsquo;s list</a>, nearest first.</p>
+      <p class="lede">Paper deadlines of the conferences I keep track of. All are real-time, embedded or systems venues
+        with a BK21+ IF in <a href="https://gist.github.com/Pusnow/6eb933355b5cb8d31ef1abcb3c3e1206">Pusnow&rsquo;s list</a>.
+        Nearest first.</p>
       <p class="now" id="now"></p>
     </header>
 
@@ -118,7 +119,7 @@
 
     <footer>
       <p>Abstract registration is usually due up to a week before the paper deadline.</p>
-      <p>Dates marked <span class="tag" style="margin-top:0">est.</span> are estimated from the previous edition and are replaced when the CFP is out. When a deadline has passed, the next edition is listed.</p>
+      <p>Dates marked <span class="tag" style="margin-top:0">est.</span> are estimated from the previous edition and are replaced when the CFP is out. When a deadline has passed, the next edition is listed. Venues with two deadlines a year are listed once per deadline.</p>
       <p class="copy">&copy; 2026 HanChangHun &middot; MIT License</p>
     </footer>
   </div>
@@ -202,11 +203,25 @@
         when: aoe('2027-04-14'), dateStr: 'Apr 14, 2027 AoE', estimated: true,
       },
       {
+        conf: 'ASPLOS', year: '2028 (September cycle)', bk: 4,
+        desc: 'Architecture, programming languages and operating systems',
+        confUrl: 'https://www.asplos-conference.org/',
+        confDates: '2028 · TBA',
+        when: aoe('2027-09-08'), dateStr: 'Sep 8, 2027 AoE', estimated: true,
+      },
+      {
         conf: 'EuroSys', year: '2028 (spring)', bk: 2,
         desc: 'Computer systems research (ACM SIGOPS EuroSys)',
         confUrl: 'https://www.eurosys.org/',
         confDates: '2028 · TBA',
         when: aoe('2027-05-13'), dateStr: 'May 13, 2027 AoE', estimated: true,
+      },
+      {
+        conf: 'EuroSys', year: '2028 (fall)', bk: 2,
+        desc: 'Computer systems research (ACM SIGOPS EuroSys)',
+        confUrl: 'https://www.eurosys.org/',
+        confDates: '2028 · TBA',
+        when: aoe('2027-09-23'), dateStr: 'Sep 23, 2027 AoE', estimated: true,
       },
       {
         conf: 'RTSS', year: '2027', bk: 4,
@@ -221,6 +236,13 @@
         confUrl: 'https://sensys.acm.org/',
         confDates: 'May 2028 · CPS-IoT Week · TBA',
         when: aoe('2027-06-04'), dateStr: 'Jun 4, 2027 AoE', estimated: true,
+      },
+      {
+        conf: 'SenSys', year: '2028 (second deadline)', bk: 3,
+        desc: 'Embedded networked sensing and IoT systems (ACM)',
+        confUrl: 'https://sensys.acm.org/',
+        confDates: 'May 2028 · CPS-IoT Week · TBA',
+        when: aoe('2027-11-04'), dateStr: 'Nov 4, 2027 AoE', estimated: true,
       },
       {
         conf: 'RTAS', year: '2028', bk: 2,

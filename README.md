@@ -1,10 +1,10 @@
-# Real-Time System Conference Deadlines
+# System Conference Deadlines
 
-Live countdown to upcoming full-paper submission deadlines for real-time, embedded and systems
-conferences that have a BK21+ IF in [Pusnow's list of top CS conferences](https://gist.github.com/Pusnow/6eb933355b5cb8d31ef1abcb3c3e1206).
+Live countdown to the paper deadlines of the conferences I keep track of. All are real-time, embedded or
+systems venues that have a BK21+ IF in [Pusnow's list of top CS conferences](https://gist.github.com/Pusnow/6eb933355b5cb8d31ef1abcb3c3e1206).
 
 Single static `index.html` — open in a browser, or visit the deployed page:
-<https://hanchanghun.github.io/Real-Time-System-Conference-Deadline/>.
+<https://hanchanghun.github.io/System-Conference-Deadline/>.
 
 ## Tracked conferences
 
@@ -23,8 +23,8 @@ Single static `index.html` — open in a browser, or visit the deployed page:
 | RTAS | 2 | <https://2027.rtas.org/cfp/> |
 | DAC | 3 | <https://dac.com/2027/program/research-manuscript-submissions> |
 
-When a conference's latest deadline has passed, the next edition is listed. MobiCom lists both its
-summer and winter deadlines. Entries marked
+When a conference's latest deadline has passed, the next edition is listed. Venues with two deadlines a
+year (MobiCom, ASPLOS, EuroSys, SenSys) are listed once per deadline. Entries marked
 **estimated** (shown in blue) are derived from the previous edition's deadline and are replaced
 with confirmed dates once the official CFP is published.
 
