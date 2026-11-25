@@ -23,7 +23,8 @@ Single static `index.html` — open in a browser, or visit the deployed page:
 | RTAS | 2 | <https://2027.rtas.org/cfp/> |
 | DAC | 3 | <https://dac.com/2027/program/research-manuscript-submissions> |
 
-When a conference's latest deadline has passed, the next edition is listed. Entries marked
+When a conference's latest deadline has passed, the next edition is listed. MobiCom lists both its
+summer and winter deadlines. Entries marked
 **estimated** (shown in blue) are derived from the previous edition's deadline and are replaced
 with confirmed dates once the official CFP is published.
 
