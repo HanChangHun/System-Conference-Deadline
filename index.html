@@ -144,13 +144,13 @@
 
     // Venues with a BK21+ IF in Pusnow's list of top CS conferences. For a venue whose last deadline has
     // passed, the next edition's deadline is shown, estimated from the previous one until its CFP is out.
-    // desc: what the venue is. memo: how a real-time systems researcher might look at the venue.
+    // desc: what the venue is. memo: the venue's field in a short Korean phrase.
     // Checked on 2026-11-25.
     const DEADLINES = [
       {
         conf: 'MobiSys', year: '2027', bk: 3,
         desc: 'Mobile systems, applications and services (ACM SIGMOBILE)',
-        memo: '모바일 시스템 관련. 온디바이스 추론의 지연 시간·에너지 연구가 실림',
+        memo: '모바일 시스템 관련 학회',
         confUrl: 'https://www.sigmobile.org/mobisys/2027/',
         confDates: 'Jun 21–25, 2027 · Ho Chi Minh City, Vietnam',
         when: aoe('2026-12-04'), dateStr: 'Dec 4, 2026 AoE',
@@ -158,7 +158,7 @@
       {
         conf: 'OSDI', year: '2027', bk: 4,
         desc: 'Operating systems design and implementation (USENIX)',
-        memo: '실시간성 문제를 스케줄러·자원 격리 같은 새 시스템 설계와 구현으로 풀 때',
+        memo: 'OS·시스템 분야 학회',
         confUrl: 'https://www.usenix.org/conference/osdi27',
         confDates: 'Jul 7–9, 2027 · Baltimore, MD',
         when: est559pm('2026-12-08'), dateStr: 'Dec 8, 2026 17:59 EST',
@@ -166,7 +166,7 @@
       {
         conf: 'ATC', year: '2027', bk: 3,
         desc: 'Practical computer systems (ACM SIGOPS, successor to USENIX ATC)',
-        memo: 'CFP에 전력 관리, 워크로드 특성 분석, 실제 배포 경험이 있어 측정·구현 중심 연구가 들어감',
+        memo: '실용 시스템 분야 학회',
         confUrl: 'https://atc.sigops.org/2027/',
         confDates: 'Jun 28 – Jul 1, 2027 · Rennes, France',
         when: aoe('2027-01-19'), dateStr: 'Jan 19, 2027 AoE',
@@ -174,7 +174,7 @@
       {
         conf: 'MobiCom', year: '2027 (winter)', bk: 4,
         desc: 'Mobile computing and wireless networking (ACM SIGMOBILE)',
-        memo: '모바일 시스템 관련. 무선 구간을 포함한 종단 간 지연 문제를 다룸',
+        memo: '모바일 시스템 관련 학회',
         confUrl: 'https://sigmobile.org/mobicom/2027/',
         confDates: '2027 · TBA',
         when: aoe('2027-03-12'), dateStr: 'Mar 12, 2027 AoE', estimated: true,
@@ -182,7 +182,7 @@
       {
         conf: 'EMSOFT', year: '2027', bk: 2,
         desc: 'Embedded software and real-time embedded systems (ESWEEK)',
-        memo: '실시간 임베디드 시스템의 설계·분석이 중심 주제',
+        memo: '임베디드 소프트웨어·실시간 임베디드 시스템 학회',
         confUrl: 'https://esweek.org/',
         confDates: 'Oct 10–15, 2027 · Long Beach, CA',
         when: aoe('2027-03-30'), dateStr: 'Mar 30, 2027 AoE', estimated: true,
@@ -190,7 +190,7 @@
       {
         conf: 'SOSP', year: '2027', bk: 4,
         desc: 'Operating systems principles (ACM SIGOPS)',
-        memo: 'OSDI와 같이, 실시간성 문제를 OS·런타임 설계와 구현으로 풀 때',
+        memo: 'OS·시스템 분야 학회',
         confUrl: 'https://sigops.org/s/conferences/sosp/',
         confDates: '2027 · TBA',
         when: aoe('2027-03-31'), dateStr: 'Mar 31, 2027 AoE', estimated: true,
@@ -198,7 +198,7 @@
       {
         conf: 'ASPLOS', year: '2028 (April cycle)', bk: 4,
         desc: 'Architecture, programming languages and operating systems',
-        memo: '가속기·메모리 같은 하드웨어 동작이 타이밍에 주는 영향을 다룰 때',
+        memo: '아키텍처·프로그래밍 언어·OS 교차 분야 학회',
         confUrl: 'https://www.asplos-conference.org/',
         confDates: '2028 · TBA',
         when: aoe('2027-04-14'), dateStr: 'Apr 14, 2027 AoE', estimated: true,
@@ -206,7 +206,7 @@
       {
         conf: 'EuroSys', year: '2028 (spring)', bk: 2,
         desc: 'Computer systems research (ACM SIGOPS EuroSys)',
-        memo: '스케줄러·런타임 같은 시스템 해법으로 지연 시간 문제를 풀 때',
+        memo: '유럽 기반 시스템 분야 학회',
         confUrl: 'https://www.eurosys.org/',
         confDates: '2028 · TBA',
         when: aoe('2027-05-13'), dateStr: 'May 13, 2027 AoE', estimated: true,
@@ -214,7 +214,7 @@
       {
         conf: 'RTSS', year: '2027', bk: 4,
         desc: 'Real-time systems: scheduling, timing analysis, real-time OS (IEEE)',
-        memo: '실시간 분야 학회. 스케줄링·타이밍 분석 이론과 시스템 구현을 모두 다룸',
+        memo: '실시간 시스템 분야 학회',
         confUrl: 'https://2026.rtss.org/',
         confDates: 'Dec 2027 · TBA',
         when: aoe('2027-05-25'), dateStr: 'May 25, 2027 AoE', estimated: true,
@@ -222,7 +222,7 @@
       {
         conf: 'SenSys', year: '2028 (first deadline)', bk: 3,
         desc: 'Embedded networked sensing and IoT systems (ACM)',
-        memo: '자원이 제한된 센서·IoT 기기에서의 시간 제약 처리를 다룰 때',
+        memo: '센서·IoT 시스템 분야 학회',
         confUrl: 'https://sensys.acm.org/',
         confDates: 'May 2028 · CPS-IoT Week · TBA',
         when: aoe('2027-06-04'), dateStr: 'Jun 4, 2027 AoE', estimated: true,
@@ -230,7 +230,7 @@
       {
         conf: 'RTAS', year: '2028', bk: 2,
         desc: 'Real-time and embedded technology and applications (IEEE)',
-        memo: '실시간 분야 학회. 실제 구현 위 실험을 중시하고 실시간 추론 같은 응용도 받음',
+        memo: '실시간·임베디드 시스템 응용 분야 학회',
         confUrl: 'https://2027.rtas.org/',
         confDates: 'May 2028 · CPS-IoT Week · TBA',
         when: aoe('2027-11-04'), dateStr: 'Nov 4, 2027 AoE', estimated: true,
@@ -238,7 +238,7 @@
       {
         conf: 'DAC', year: '2028', bk: 3,
         desc: 'Design automation for chips and electronic systems',
-        memo: '타이밍을 예측할 수 있는 하드웨어나 HW·SW 공동 설계를 다룰 때',
+        memo: '설계 자동화(EDA) 분야 학회',
         confUrl: 'https://dac.com/',
         confDates: 'Jun 24–30, 2028 · San Jose, CA',
         when: pst5pm('2027-11-17'), dateStr: 'Nov 17, 2027 17:00 PST', estimated: true,
