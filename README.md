@@ -28,6 +28,11 @@ year (MobiCom, ASPLOS, EuroSys, SenSys) are listed once per deadline. Entries ma
 **estimated** (shown in blue) are derived from the previous edition's deadline and are replaced
 with confirmed dates once the official CFP is published.
 
+## Single-deadline view
+
+Select a countdown to open it on its own page, e.g. `#osdi-2027`. A bare venue such as `#mobicom` opens that
+venue's next deadline, so the link keeps working after a deadline passes.
+
 ## Updating a deadline
 
 Edit the `DEADLINES` array in `index.html`. Use the `aoe('YYYY-MM-DD')`

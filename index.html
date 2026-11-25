@@ -36,6 +36,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    [hidden] { display: none !important; }
     body {
       background: var(--bg);
       color: var(--ink);
@@ -82,6 +83,8 @@
     }
 
     .countdown { text-align: right; font: 500 0.95rem/1.5 var(--mono); white-space: nowrap; }
+    .countdown a { text-decoration: none; border-bottom: 1px solid var(--line); }
+    .countdown a:hover { border-bottom-color: var(--muted); }
     .countdown .sub { font-size: 0.74rem; color: var(--muted); }
     .soon .countdown { color: var(--soon-ink); }
     .urgent .countdown { color: var(--urgent-ink); }
@@ -91,16 +94,38 @@
     footer p + p { margin-top: 6px; }
     footer .copy { color: var(--faint); margin-top: 14px; }
 
+    /* Single-deadline view */
+    .big { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: 24px; }
+    .back { align-self: flex-start; font-size: 0.85rem; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+    .back:hover { border-bottom-color: var(--muted); }
+    .big-inner { margin: auto; width: 100%; min-width: 0; max-width: 960px; text-align: center; padding: 32px 0 48px; }
+    .kicker { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); }
+    .big h1 { font-size: clamp(2rem, 6vw, 3.6rem); line-height: 1.15; margin-top: 8px; overflow-wrap: break-word; }
+    .big-desc { color: var(--muted); margin-top: 8px; }
+    .units { display: flex; justify-content: center; gap: clamp(16px, 5vw, 56px); margin: clamp(32px, 7vh, 64px) 0; }
+    .u .n { font: 500 clamp(2.4rem, 11vw, 6.5rem)/1 var(--mono); font-variant-numeric: tabular-nums; }
+    .u .l { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--faint); margin-top: 12px; }
+    .closed { font: 500 1.4rem/1.4 var(--mono); color: var(--faint); margin: clamp(32px, 7vh, 64px) 0; }
+    .big.soon .n { color: var(--soon-ink); }
+    .big.urgent .n { color: var(--urgent-ink); }
+    .big-date { font: 500 1rem/1.5 var(--mono); }
+    .big-date .tag { margin: 0 0 0 8px; vertical-align: 2px; }
+    .big-kst { font: 0.85rem/1.5 var(--mono); color: var(--muted); margin-top: 2px; }
+    .big-meta { color: var(--faint); font-size: 0.8rem; margin-top: 16px; }
+    .big-meta a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+    .big .now { margin-top: 8px; }
+
     @media (max-width: 760px) {
       .wrap { padding: 32px 16px 48px; }
       .row { grid-template-columns: 1fr; gap: 6px; padding: 16px 4px; }
       .head { display: none; }
       .countdown { text-align: left; }
+      .big { padding: 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="wrap" id="wrap">
     <header>
       <h1>Systems paper deadlines</h1>
       <p class="lede">Paper deadlines of the conferences I keep track of. All are real-time, embedded or systems venues
@@ -120,9 +145,30 @@
     <footer>
       <p>Abstract registration is usually due up to a week before the paper deadline.</p>
       <p>Dates marked <span class="tag" style="margin-top:0">est.</span> are estimated from the previous edition and are replaced when the CFP is out. When a deadline has passed, the next edition is listed. Venues with two deadlines a year are listed once per deadline.</p>
+      <p>Select a countdown to open it on its own page.</p>
       <p class="copy">&copy; 2026 HanChangHun &middot; MIT License</p>
     </footer>
   </div>
+
+  <main class="big" id="big" hidden>
+    <a class="back" href="#">&larr; All deadlines</a>
+    <div class="big-inner">
+      <p class="kicker">Paper deadline</p>
+      <h1 id="b-name"></h1>
+      <p class="big-desc" id="b-desc"></p>
+      <div class="units" id="b-units">
+        <div class="u"><div class="n" id="b-d">--</div><div class="l">Days</div></div>
+        <div class="u"><div class="n" id="b-h">--</div><div class="l">Hours</div></div>
+        <div class="u"><div class="n" id="b-m">--</div><div class="l">Min</div></div>
+        <div class="u"><div class="n" id="b-s">--</div><div class="l">Sec</div></div>
+      </div>
+      <p class="closed" id="b-closed" hidden>Deadline passed</p>
+      <p class="big-date"><span id="b-date"></span><span class="tag" id="b-est">est.</span></p>
+      <p class="big-kst" id="b-kst"></p>
+      <p class="big-meta"><span id="b-meta"></span> &middot; <a id="b-site" target="_blank" rel="noopener">Conference site</a></p>
+      <p class="now" id="b-now"></p>
+    </div>
+  </main>
 
   <script>
     // ---- Time helpers (each returns the deadline as UTC epoch ms) ----
@@ -262,6 +308,18 @@
 
     const pad = (n) => String(n).padStart(2, '0');
     const DAY = 86400000;
+    const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const LIST_TITLE = document.title;
+    const NOW_FMT = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+    });
+    const $ = (id) => document.getElementById(id);
+
+    // URL fragment of an entry, so 'MobiCom' + '2027 (winter)' gives 'mobicom-2027-winter'. A bare venue
+    // ('#mobicom') or an edition that is no longer listed opens the venue's next deadline.
+    const slugOf = (d) => `${d.conf} ${d.year}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const venueOf = (d) => d.conf.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     function classify(diff) {
       if (diff <= 0) return 'passed';
@@ -276,8 +334,7 @@
       const h = Math.floor((diff % DAY) / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
-      if (d > 0) return `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`;
-      return `${pad(h)}:${pad(m)}:${pad(s)}<div class="sub">today</div>`;
+      return `${d > 0 ? d + 'd ' : ''}${pad(h)}:${pad(m)}:${pad(s)}`;
     }
 
     function kstStr(when) {
@@ -285,8 +342,13 @@
       return `KST ${k.getUTCFullYear()}-${pad(k.getUTCMonth() + 1)}-${pad(k.getUTCDate())} ${pad(k.getUTCHours())}:${pad(k.getUTCMinutes())}`;
     }
 
+    function kstLong(when) {
+      const k = new Date(when + 9 * 3600000);
+      return `${k.getUTCFullYear()}-${pad(k.getUTCMonth() + 1)}-${pad(k.getUTCDate())} (${WEEKDAYS[k.getUTCDay()]}) ${pad(k.getUTCHours())}:${pad(k.getUTCMinutes())} KST`;
+    }
+
     function render() {
-      const list = document.getElementById('list');
+      const list = $('list');
       const now = Date.now();
       const items = DEADLINES
         .map(d => ({ ...d, diff: d.when - now }))
@@ -306,30 +368,94 @@
             <div class="kst">${kstStr(it.when)}</div>
             ${it.estimated ? '<span class="tag">est.</span>' : ''}
           </div>
-          <div class="countdown">${fmtLeft(it.diff)}</div>`;
+          <div class="countdown">
+            <a class="left" href="#${slugOf(it)}" title="Open this countdown on its own page">${fmtLeft(it.diff)}</a>
+            <div class="sub"></div>
+          </div>`;
         list.appendChild(row);
       }
+    }
+
+    // ---- Single-deadline view ----
+    let current = null;
+    let listScroll = 0;
+
+    function findEntry(hash) {
+      const key = decodeURIComponent(hash.replace(/^#/, '')).toLowerCase();
+      if (!key) return null;
+      const exact = DEADLINES.find(d => slugOf(d) === key);
+      if (exact) return exact;
+      const now = Date.now();
+      return DEADLINES
+        .filter(d => key === venueOf(d) || key.startsWith(venueOf(d) + '-'))
+        .sort((a, b) => ((a.when <= now) - (b.when <= now)) || (a.when - b.when))[0] || null;
+    }
+
+    function showView() {
+      const entry = findEntry(location.hash);
+      if (!entry) {
+        const wasBig = current !== null;
+        current = null;
+        $('big').hidden = true;
+        $('wrap').hidden = false;
+        document.title = LIST_TITLE;
+        if (wasBig) window.scrollTo(0, listScroll);
+        return;
+      }
+      if (current === null) listScroll = window.scrollY;
+      current = entry;
+      $('wrap').hidden = true;
+      $('big').hidden = false;
+      document.title = `${entry.conf} ${entry.year} paper deadline`;
+      $('b-name').textContent = `${entry.conf} ${entry.year}`;
+      $('b-desc').textContent = entry.desc;
+      $('b-date').textContent = (entry.estimated ? '~ ' : '') + entry.dateStr;
+      $('b-est').hidden = !entry.estimated;
+      $('b-kst').textContent = kstLong(entry.when);
+      $('b-meta').textContent = `${entry.confDates} · BK21+ IF ${entry.bk}`;
+      $('b-site').href = entry.confUrl;
+      window.scrollTo(0, 0);
+      tick();
     }
 
     function tick() {
       const now = Date.now();
       document.querySelectorAll('.row[data-when]').forEach(row => {
         const diff = Number(row.dataset.when) - now;
-        row.querySelector('.countdown').innerHTML = fmtLeft(diff);
+        row.querySelector('.left').textContent = fmtLeft(diff);
+        row.querySelector('.sub').textContent = diff > 0 && diff < DAY ? 'today' : '';
         row.classList.remove('urgent', 'soon', 'passed');
         const c = classify(diff);
         if (c) row.classList.add(c);
       });
-      const fmt = new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
-      });
-      document.getElementById('now').textContent = `Now ${fmt.format(new Date())} KST`;
+      const nowText = `Now ${NOW_FMT.format(new Date())} KST`;
+      $('now').textContent = nowText;
+      if (current) {
+        const diff = current.when - now;
+        const big = $('big');
+        big.classList.remove('urgent', 'soon', 'passed');
+        const c = classify(diff);
+        if (c) big.classList.add(c);
+        $('b-units').hidden = diff <= 0;
+        $('b-closed').hidden = diff > 0;
+        if (diff > 0) {
+          $('b-d').textContent = pad(Math.floor(diff / DAY));
+          $('b-h').textContent = pad(Math.floor((diff % DAY) / 3600000));
+          $('b-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+          $('b-s').textContent = pad(Math.floor((diff % 60000) / 1000));
+        }
+        $('b-now').textContent = nowText;
+      }
     }
 
     render();
+    showView();
     tick();
     setInterval(tick, 1000);
+    window.addEventListener('hashchange', showView);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && current) location.hash = '';
+    });
   </script>
 </body>
 </html>
