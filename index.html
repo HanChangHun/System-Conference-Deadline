@@ -231,7 +231,7 @@
     <header>
       <div class="badge">Paper Submission Deadlines</div>
       <h1>Real-Time System Conference Deadlines</h1>
-      <p class="subtitle">Upcoming paper deadlines</p>
+      <p class="subtitle">Upcoming paper deadlines · real-time, embedded and systems venues with a BK21+ IF</p>
       <p class="now" id="now"></p>
     </header>
 
@@ -245,55 +245,99 @@
 
     <footer>
       <p>Deadlines shown are for full paper submission. Abstract registration is typically due up to a week earlier.</p>
-      <p>Entries shown in blue are estimated from the previous year&rsquo;s schedule and will be updated when each CFP is announced.</p>
+      <p>Entries shown in blue are estimated from the previous year&rsquo;s schedule and will be updated when each CFP is announced. When a deadline has passed, the next edition is listed.</p>
+      <p>Venues: conferences with a BK21+ IF in <a href="https://gist.github.com/Pusnow/6eb933355b5cb8d31ef1abcb3c3e1206" style="color:inherit">Pusnow&rsquo;s list</a>.</p>
       <p class="copy">&copy; 2026 HanChangHun &middot; MIT License</p>
     </footer>
   </div>
 
   <script>
-    // ---- Time helpers ----
-    // AoE (Anywhere on Earth) = UTC-12. "Date X AoE" deadline = end of X in UTC-12
-    // = X+1 11:59:59.999 UTC.
-    const aoe = (yyyymmdd) => {
-      const [y,m,d] = yyyymmdd.split('-').map(Number);
+    // ---- Time helpers (each returns the deadline as UTC epoch ms) ----
+    // "Date X AoE" (UTC-12) ends at X+1 11:59:59.999 UTC.
+    const aoe = (ymd) => {
+      const [y,m,d] = ymd.split('-').map(Number);
       return Date.UTC(y, m-1, d+1, 11, 59, 59, 999);
     };
-    // PST = UTC-8 (November is standard time, not DST).
-    // 5 PM PST on date X = X 01:00 UTC on day X+1... wait: 17:00 PST = 17:00 + 8 = 25:00 UTC = next day 01:00 UTC.
-    const pst5pm = (yyyymmdd) => {
-      const [y,m,d] = yyyymmdd.split('-').map(Number);
+    // 17:00 US Pacific standard time (UTC-8) on X = X+1 01:00 UTC.
+    const pst5pm = (ymd) => {
+      const [y,m,d] = ymd.split('-').map(Number);
       return Date.UTC(y, m-1, d+1, 1, 0, 0, 0);
     };
+    // 17:59 US Eastern standard time (UTC-5) on X = X 22:59 UTC.
+    const est559pm = (ymd) => {
+      const [y,m,d] = ymd.split('-').map(Number);
+      return Date.UTC(y, m-1, d, 22, 59, 0, 0);
+    };
 
+    // Venues with a BK21+ IF in Pusnow's list of top CS conferences. For a venue whose last deadline has
+    // passed, the next edition's deadline is shown, estimated from the previous one until its CFP is out.
+    // Checked on 2026-11-25.
     const DEADLINES = [
       {
-        conf: 'RTSS', year: '2026',
+        conf: 'MobiSys', year: '2027', bk: 3,
+        confUrl: 'https://www.sigmobile.org/mobisys/2027/',
+        confDates: 'Jun 21–25, 2027 · Ho Chi Minh City, Vietnam',
+        when: aoe('2026-12-04'), dateStr: 'Dec 4, 2026 (AoE)',
+      },
+      {
+        conf: 'OSDI', year: '2027', bk: 4,
+        confUrl: 'https://www.usenix.org/conference/osdi27',
+        confDates: 'Jul 7–9, 2027 · Baltimore, MD',
+        when: est559pm('2026-12-08'), dateStr: 'Dec 8, 2026 17:59 EST',
+      },
+      {
+        conf: 'ATC', year: '2027', bk: 3,
+        confUrl: 'https://atc.sigops.org/2027/',
+        confDates: 'Jun 28 – Jul 1, 2027 · Rennes, France · ACM SIGOPS, successor to USENIX ATC',
+        when: aoe('2027-01-19'), dateStr: 'Jan 19, 2027 (AoE)',
+      },
+      {
+        conf: 'EMSOFT', year: '2027', bk: 2,
+        confUrl: 'https://esweek.org/',
+        confDates: 'Oct 10–15, 2027 · Long Beach, CA · ESWEEK',
+        when: aoe('2027-03-30'), dateStr: 'Mar 30, 2027 (AoE)', estimated: true,
+      },
+      {
+        conf: 'SOSP', year: '2027', bk: 4,
+        confUrl: 'https://sigops.org/s/conferences/sosp/',
+        confDates: '2027 · TBA',
+        when: aoe('2027-03-31'), dateStr: 'Mar 31, 2027 (AoE)', estimated: true,
+      },
+      {
+        conf: 'ASPLOS', year: '2028 (April cycle)', bk: 4,
+        confUrl: 'https://www.asplos-conference.org/',
+        confDates: '2028 · TBA',
+        when: aoe('2027-04-14'), dateStr: 'Apr 14, 2027 (AoE)', estimated: true,
+      },
+      {
+        conf: 'EuroSys', year: '2028 (spring)', bk: 2,
+        confUrl: 'https://www.eurosys.org/',
+        confDates: '2028 · TBA',
+        when: aoe('2027-05-13'), dateStr: 'May 13, 2027 (AoE)', estimated: true,
+      },
+      {
+        conf: 'RTSS', year: '2027', bk: 4,
         confUrl: 'https://2026.rtss.org/',
-        confDates: 'Dec 9–11, 2026 · Yokohama, Japan',
-        event: 'Full Paper Submission',
-        when: aoe('2026-05-26'),
-        dateStr: 'May 26, 2026 (AoE)',
-        showLocal: true,
+        confDates: 'Dec 2027 · TBA',
+        when: aoe('2027-05-25'), dateStr: 'May 25, 2027 (AoE)', estimated: true,
       },
       {
-        conf: 'RTAS', year: '2027',
-        confUrl: 'https://2026.rtas.org/',
-        confDates: 'May 2027 · TBA',
-        event: 'Full Paper Submission',
-        when: aoe('2026-11-13'),
-        dateStr: 'Nov 13, 2026 (AoE)',
-        showLocal: true,
-        estimated: true,
+        conf: 'SenSys', year: '2028 (first deadline)', bk: 3,
+        confUrl: 'https://sensys.acm.org/',
+        confDates: 'May 2028 · CPS-IoT Week · TBA',
+        when: aoe('2027-06-04'), dateStr: 'Jun 4, 2027 (AoE)', estimated: true,
       },
       {
-        conf: 'DAC', year: '2027',
-        confUrl: 'https://dac.com/2026/events/dac-2027',
-        confDates: 'Jul 10–16, 2027 · San Jose, CA',
-        event: 'Full Paper Submission',
-        when: pst5pm('2026-11-19'),
-        dateStr: 'Nov 19, 2026 17:00 PST',
-        showLocal: true,
-        estimated: true,
+        conf: 'RTAS', year: '2028', bk: 2,
+        confUrl: 'https://2027.rtas.org/',
+        confDates: 'May 2028 · CPS-IoT Week · TBA',
+        when: aoe('2027-11-04'), dateStr: 'Nov 4, 2027 (AoE)', estimated: true,
+      },
+      {
+        conf: 'DAC', year: '2028', bk: 3,
+        confUrl: 'https://dac.com/',
+        confDates: 'Jun 24–30, 2028 · San Jose, CA',
+        when: pst5pm('2027-11-17'), dateStr: 'Nov 17, 2027 17:00 PST', estimated: true,
       },
     ];
 
@@ -355,11 +399,11 @@
         row.innerHTML = `
           <div class="conf">
             <div class="conf-name"><a href="${item.confUrl}" target="_blank" rel="noopener">${item.conf} ${item.year}</a></div>
-            <div class="conf-meta">${item.confDates}</div>
+            <div class="conf-meta">${item.confDates} · BK21+ IF ${item.bk}</div>
           </div>
           <div>
             <div class="event-dates">${datePrefix}${item.dateStr}</div>
-            ${item.showLocal ? `<div class="event-local">${kstStr(item.when)}</div>` : ''}
+            <div class="event-local">${kstStr(item.when)}</div>
             ${item.estimated ? `<div class="event-note">est. from previous year</div>` : ''}
           </div>
           <div class="countdown">${fmtCountdown(item.diff)}</div>
