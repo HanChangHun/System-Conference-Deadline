@@ -11,6 +11,7 @@ Single static `index.html` — open in a browser, or visit the deployed page:
 | Conference | BK21+ IF | Source |
 |------------|----------|--------|
 | MobiSys | 3 | <https://www.sigmobile.org/mobisys/2027/call_for_papers/> |
+| MobiCom | 4 | <https://sigmobile.org/mobicom/2027/cfp.html> |
 | OSDI | 4 | <https://www.usenix.org/conference/osdi27/call-for-papers> |
 | ATC (ACM SIGOPS, successor to USENIX ATC) | 3 (USENIX ATC) | <https://atc.sigops.org/2027/call-for-papers/> |
 | EMSOFT (ESWEEK) | 2 | <https://esweek.org/emsoft_cfp/> |

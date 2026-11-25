@@ -1,252 +1,125 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#1a1545">
-  <title>Real-Time System Conference Deadlines</title>
+  <meta name="description" content="Full-paper deadlines of real-time, embedded and systems conferences with a BK21+ IF, with a live countdown in KST.">
+  <meta name="theme-color" content="#FBFBFA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#24292E" media="(prefers-color-scheme: dark)">
+  <title>Systems Paper Deadlines</title>
   <style>
+    :root {
+      --bg: #FBFBFA;
+      --ink: #2F3437;
+      --muted: #787774;
+      --faint: #A5A29C;
+      --line: #EAEAEA;
+      --hover: #F4F3F0;
+      --est-bg: #E1F3FE;  --est-ink: #1F6C9F;
+      --soon-ink: #956400;
+      --urgent-ink: #9F2F2D;
+      --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+      --mono: 'SF Mono', 'JetBrains Mono', 'Cascadia Mono', Consolas, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #24292E;
+        --ink: #E1E4E8;
+        --muted: #959DA5;
+        --faint: #6A737D;
+        --line: #3A4047;
+        --hover: #2B3036;
+        --est-bg: #1F3A52;  --est-ink: #9CCBF0;
+        --soon-ink: #E8C36A;
+        --urgent-ink: #F2A6A2;
+      }
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html, body {
-      min-height: 100%;
-      overscroll-behavior: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
     body {
-      background: #0f0c29;
-      color: #fff;
-      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-      font-variant-numeric: tabular-nums;
-      padding: clamp(1rem, 3vw, 2.5rem) clamp(0.75rem, 3vw, 2rem) 3rem;
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.6 var(--sans);
+      -webkit-font-smoothing: antialiased;
     }
+    a { color: inherit; }
 
-    .bg {
-      position: fixed; inset: 0;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      z-index: -2;
-    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 56px 24px 64px; }
 
-    .wrap {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+    header { margin-bottom: 36px; }
+    h1 { font-size: 1.6rem; font-weight: 650; letter-spacing: -0.02em; line-height: 1.2; }
+    .lede { color: var(--muted); margin-top: 6px; max-width: 62ch; }
+    .now { font: 0.8rem/1.4 var(--mono); color: var(--faint); margin-top: 10px; }
 
-    header {
-      text-align: center;
-      margin-bottom: clamp(1.5rem, 4vh, 2.5rem);
-    }
-    .badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 20px;
-      padding: 6px 16px;
-      font-size: 0.75rem;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      backdrop-filter: blur(10px);
-    }
-    h1 {
-      font-size: clamp(1.8rem, 4.5vw, 3.2rem);
-      font-weight: 700;
-      background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.4rem;
-    }
-    .subtitle {
-      color: rgba(255,255,255,0.55);
-      font-size: clamp(0.85rem, 1.4vw, 1rem);
-    }
-    .now {
-      color: rgba(255,255,255,0.4);
-      font-size: 0.8rem;
-      margin-top: 0.4rem;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .chip {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 999px;
-      padding: 0.45rem 1rem;
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.7);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .chip:hover { background: rgba(255,255,255,0.1); color: #fff; }
-    .chip.active {
-      background: linear-gradient(135deg, #f7797d, #FBD786);
-      color: #1a1545;
-      border-color: transparent;
-      font-weight: 600;
-    }
-
-    .table {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      overflow: hidden;
-      backdrop-filter: blur(20px);
-    }
-
+    .list { border-top: 1px solid var(--line); }
     .row {
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) 260px 200px;
-      gap: 1rem;
-      padding: 1.1rem 1.3rem;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      align-items: center;
-      transition: background 0.2s;
+      grid-template-columns: minmax(0, 1fr) 230px 170px;
+      gap: 24px;
+      padding: 18px 12px;
+      border-bottom: 1px solid var(--line);
+      align-items: baseline;
     }
-    .row:last-child { border-bottom: none; }
-    .row:hover { background: rgba(255,255,255,0.03); }
+    .row:hover { background: var(--hover); }
+    .head {
+      font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--faint); padding-top: 10px; padding-bottom: 10px;
+    }
+    .head:hover { background: none; }
 
-    .row.header {
-      background: rgba(255,255,255,0.04);
-      font-size: 0.7rem;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      padding: 0.75rem 1.3rem;
-    }
+    .name { font-weight: 600; font-size: 1rem; }
+    .name a { text-decoration: none; border-bottom: 1px solid var(--line); }
+    .name a:hover { border-bottom-color: var(--muted); }
+    .desc { font-size: 0.88rem; margin-top: 2px; }
+    .memo { font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
+    .meta { color: var(--faint); font-size: 0.76rem; margin-top: 4px; }
 
-    .conf {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-    .conf-name {
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.3px;
-    }
-    .conf-name a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px dotted rgba(255,255,255,0.3);
-    }
-    .conf-name a:hover { border-bottom-color: #FBD786; }
-    .conf-meta {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.45);
-    }
-
-    .event-dates {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.9);
-    }
-    .event-local {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.45);
-      margin-top: 0.25rem;
-    }
-    .event-note {
-      font-size: 0.68rem;
-      color: #8eb8ff;
-      margin-top: 0.2rem;
-      letter-spacing: 0.3px;
-    }
-
-    .countdown {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-    .cd-main {
-      font-size: 1.15rem;
-      font-weight: 700;
-    }
-    .cd-sub {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.5);
-      margin-top: 0.15rem;
-    }
-
-    .urgent .cd-main { color: #f7797d; animation: pulse 2s infinite; }
-    .soon .cd-main { color: #FBD786; }
-    .later .cd-main { color: #C6FFDD; }
-    .passed .cd-main { color: rgba(255,255,255,0.35); }
-
-    .row.is-estimated .event-dates { color: #8eb8ff; }
-
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
-
+    .date { font: 500 0.88rem/1.5 var(--mono); }
+    .kst { font: 0.76rem/1.5 var(--mono); color: var(--muted); margin-top: 2px; }
     .tag {
-      display: inline-block;
-      font-size: 0.62rem;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-left: 0.4rem;
-      vertical-align: middle;
-    }
-    .tag.estimated { background: rgba(142,184,255,0.18); color: #8eb8ff; }
-    .tag.passed { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
-
-    footer {
-      max-width: 720px;
-      margin: 2rem auto 0;
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.65;
-      text-align: center;
-    }
-    footer p { margin: 0.35rem 0; }
-    footer .copy {
-      margin-top: 0.9rem;
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.35);
+      display: inline-block; font: 600 0.66rem/1 var(--sans); letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 4px 8px; border-radius: 9999px; margin-top: 6px;
+      background: var(--est-bg); color: var(--est-ink);
     }
 
-    @media (max-width: 800px) {
-      .row {
-        grid-template-columns: 1fr;
-        gap: 0.4rem;
-      }
-      .row.header { display: none; }
-      .conf { flex-direction: row; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
-      .conf-meta { font-size: 0.7rem; }
+    .countdown { text-align: right; font: 500 0.95rem/1.5 var(--mono); white-space: nowrap; }
+    .countdown .sub { font-size: 0.74rem; color: var(--muted); }
+    .soon .countdown { color: var(--soon-ink); }
+    .urgent .countdown { color: var(--urgent-ink); }
+    .passed .countdown { color: var(--faint); }
+
+    footer { margin-top: 28px; color: var(--muted); font-size: 0.8rem; max-width: 70ch; }
+    footer p + p { margin-top: 6px; }
+    footer .copy { color: var(--faint); margin-top: 14px; }
+
+    @media (max-width: 760px) {
+      .wrap { padding: 32px 16px 48px; }
+      .row { grid-template-columns: 1fr; gap: 6px; padding: 16px 4px; }
+      .head { display: none; }
       .countdown { text-align: left; }
-      .row { padding: 1rem; }
     }
   </style>
 </head>
 <body>
-  <div class="bg"></div>
-
   <div class="wrap">
     <header>
-      <div class="badge">Paper Submission Deadlines</div>
-      <h1>Real-Time System Conference Deadlines</h1>
-      <p class="subtitle">Upcoming paper deadlines · real-time, embedded and systems venues with a BK21+ IF</p>
+      <h1>Systems paper deadlines</h1>
+      <p class="lede">Full-paper deadlines of real-time, embedded and systems conferences that have a BK21+ IF in
+        <a href="https://gist.github.com/Pusnow/6eb933355b5cb8d31ef1abcb3c3e1206">Pusnow&rsquo;s list</a>, nearest first.</p>
       <p class="now" id="now"></p>
     </header>
 
-    <div class="table" id="table">
-      <div class="row header">
+    <div class="list" id="list">
+      <div class="row head">
         <div>Conference</div>
         <div>Deadline</div>
-        <div style="text-align:right">Countdown</div>
+        <div style="text-align:right">Time left</div>
       </div>
     </div>
 
     <footer>
-      <p>Deadlines shown are for full paper submission. Abstract registration is typically due up to a week earlier.</p>
-      <p>Entries shown in blue are estimated from the previous year&rsquo;s schedule and will be updated when each CFP is announced. When a deadline has passed, the next edition is listed.</p>
-      <p>Venues: conferences with a BK21+ IF in <a href="https://gist.github.com/Pusnow/6eb933355b5cb8d31ef1abcb3c3e1206" style="color:inherit">Pusnow&rsquo;s list</a>.</p>
+      <p>Abstract registration is usually due up to a week before the paper deadline.</p>
+      <p>Dates marked <span class="tag" style="margin-top:0">est.</span> are estimated from the previous edition and are replaced when the CFP is out. When a deadline has passed, the next edition is listed.</p>
       <p class="copy">&copy; 2026 HanChangHun &middot; MIT License</p>
     </footer>
   </div>
@@ -271,175 +144,178 @@
 
     // Venues with a BK21+ IF in Pusnow's list of top CS conferences. For a venue whose last deadline has
     // passed, the next edition's deadline is shown, estimated from the previous one until its CFP is out.
-    // Checked on 2026-11-25.
+    // desc: what the venue is. memo: how it relates to my work (real-time behaviour of DNN workloads on
+    // embedded GPUs such as Jetson Orin, power limits and throttling). Checked on 2026-11-25.
     const DEADLINES = [
       {
         conf: 'MobiSys', year: '2027', bk: 3,
+        desc: 'Mobile systems, applications and services (ACM SIGMOBILE)',
+        memo: '연구실 관련',
         confUrl: 'https://www.sigmobile.org/mobisys/2027/',
         confDates: 'Jun 21–25, 2027 · Ho Chi Minh City, Vietnam',
-        when: aoe('2026-12-04'), dateStr: 'Dec 4, 2026 (AoE)',
+        when: aoe('2026-12-04'), dateStr: 'Dec 4, 2026 AoE',
       },
       {
         conf: 'OSDI', year: '2027', bk: 4,
+        desc: 'Operating systems design and implementation (USENIX)',
+        memo: 'OS 최상위 학회. 전력 한도 문제를 OS·런타임 기법으로 풀 때',
         confUrl: 'https://www.usenix.org/conference/osdi27',
         confDates: 'Jul 7–9, 2027 · Baltimore, MD',
         when: est559pm('2026-12-08'), dateStr: 'Dec 8, 2026 17:59 EST',
       },
       {
         conf: 'ATC', year: '2027', bk: 3,
+        desc: 'Practical computer systems (ACM SIGOPS, successor to USENIX ATC)',
+        memo: 'CFP 주제에 전력 관리, 하드웨어·소프트웨어 상호작용, 워크로드 특성 분석이 있어 Jetson 측정·런타임 연구가 맞음',
         confUrl: 'https://atc.sigops.org/2027/',
-        confDates: 'Jun 28 – Jul 1, 2027 · Rennes, France · ACM SIGOPS, successor to USENIX ATC',
-        when: aoe('2027-01-19'), dateStr: 'Jan 19, 2027 (AoE)',
+        confDates: 'Jun 28 – Jul 1, 2027 · Rennes, France',
+        when: aoe('2027-01-19'), dateStr: 'Jan 19, 2027 AoE',
+      },
+      {
+        conf: 'MobiCom', year: '2027 (winter)', bk: 4,
+        desc: 'Mobile computing and wireless networking (ACM SIGMOBILE)',
+        memo: '연구실 관련',
+        confUrl: 'https://sigmobile.org/mobicom/2027/',
+        confDates: '2027 · TBA',
+        when: aoe('2027-03-12'), dateStr: 'Mar 12, 2027 AoE', estimated: true,
       },
       {
         conf: 'EMSOFT', year: '2027', bk: 2,
+        desc: 'Embedded software and real-time embedded systems (ESWEEK)',
+        memo: '임베디드 GPU에서의 실시간성 연구와 가장 가까움',
         confUrl: 'https://esweek.org/',
-        confDates: 'Oct 10–15, 2027 · Long Beach, CA · ESWEEK',
-        when: aoe('2027-03-30'), dateStr: 'Mar 30, 2027 (AoE)', estimated: true,
+        confDates: 'Oct 10–15, 2027 · Long Beach, CA',
+        when: aoe('2027-03-30'), dateStr: 'Mar 30, 2027 AoE', estimated: true,
       },
       {
         conf: 'SOSP', year: '2027', bk: 4,
+        desc: 'Operating systems principles (ACM SIGOPS)',
+        memo: 'OS 최상위 학회. 문턱이 높음',
         confUrl: 'https://sigops.org/s/conferences/sosp/',
         confDates: '2027 · TBA',
-        when: aoe('2027-03-31'), dateStr: 'Mar 31, 2027 (AoE)', estimated: true,
+        when: aoe('2027-03-31'), dateStr: 'Mar 31, 2027 AoE', estimated: true,
       },
       {
         conf: 'ASPLOS', year: '2028 (April cycle)', bk: 4,
+        desc: 'Architecture, programming languages and operating systems',
+        memo: '전력 한도와 가속기 동작처럼 하드웨어·소프트웨어 경계를 다룰 때',
         confUrl: 'https://www.asplos-conference.org/',
         confDates: '2028 · TBA',
-        when: aoe('2027-04-14'), dateStr: 'Apr 14, 2027 (AoE)', estimated: true,
+        when: aoe('2027-04-14'), dateStr: 'Apr 14, 2027 AoE', estimated: true,
       },
       {
         conf: 'EuroSys', year: '2028 (spring)', bk: 2,
+        desc: 'Computer systems research (ACM SIGOPS EuroSys)',
+        memo: '런타임·스케줄러 같은 시스템 해법일 때',
         confUrl: 'https://www.eurosys.org/',
         confDates: '2028 · TBA',
-        when: aoe('2027-05-13'), dateStr: 'May 13, 2027 (AoE)', estimated: true,
+        when: aoe('2027-05-13'), dateStr: 'May 13, 2027 AoE', estimated: true,
       },
       {
         conf: 'RTSS', year: '2027', bk: 4,
+        desc: 'Real-time systems: scheduling, timing analysis, real-time OS (IEEE)',
+        memo: '실시간 스케줄링·타이밍 분석. 주제와 직접 맞음',
         confUrl: 'https://2026.rtss.org/',
         confDates: 'Dec 2027 · TBA',
-        when: aoe('2027-05-25'), dateStr: 'May 25, 2027 (AoE)', estimated: true,
+        when: aoe('2027-05-25'), dateStr: 'May 25, 2027 AoE', estimated: true,
       },
       {
         conf: 'SenSys', year: '2028 (first deadline)', bk: 3,
+        desc: 'Embedded networked sensing and IoT systems (ACM)',
+        memo: '엣지 기기의 측정·시스템 연구가 들어감',
         confUrl: 'https://sensys.acm.org/',
         confDates: 'May 2028 · CPS-IoT Week · TBA',
-        when: aoe('2027-06-04'), dateStr: 'Jun 4, 2027 (AoE)', estimated: true,
+        when: aoe('2027-06-04'), dateStr: 'Jun 4, 2027 AoE', estimated: true,
       },
       {
         conf: 'RTAS', year: '2028', bk: 2,
+        desc: 'Real-time and embedded technology and applications (IEEE)',
+        memo: '실시간·임베디드 응용. 주제와 직접 맞음',
         confUrl: 'https://2027.rtas.org/',
         confDates: 'May 2028 · CPS-IoT Week · TBA',
-        when: aoe('2027-11-04'), dateStr: 'Nov 4, 2027 (AoE)', estimated: true,
+        when: aoe('2027-11-04'), dateStr: 'Nov 4, 2027 AoE', estimated: true,
       },
       {
         conf: 'DAC', year: '2028', bk: 3,
+        desc: 'Design automation for chips and electronic systems',
+        memo: '하드웨어 쪽 기여가 있을 때',
         confUrl: 'https://dac.com/',
         confDates: 'Jun 24–30, 2028 · San Jose, CA',
         when: pst5pm('2027-11-17'), dateStr: 'Nov 17, 2027 17:00 PST', estimated: true,
       },
     ];
 
-    const pad = (n) => String(n).padStart(2,'0');
+    const pad = (n) => String(n).padStart(2, '0');
+    const DAY = 86400000;
 
     function classify(diff) {
       if (diff <= 0) return 'passed';
-      const days = diff / (1000*60*60*24);
-      if (days < 7) return 'urgent';
-      if (days < 30) return 'soon';
-      if (days < 120) return 'later';
+      if (diff < 7 * DAY) return 'urgent';
+      if (diff < 30 * DAY) return 'soon';
       return '';
     }
 
-    function fmtCountdown(diff) {
-      if (diff <= 0) return '<div class="cd-main">passed</div>';
-      const d = Math.floor(diff / (1000*60*60*24));
-      const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-      const m = Math.floor((diff % (1000*60*60)) / (1000*60));
-      const s = Math.floor((diff % (1000*60)) / 1000);
-      if (d > 0) {
-        return `<div class="cd-main">${d}d ${pad(h)}h ${pad(m)}m ${pad(s)}s</div>`;
-      }
-      return `<div class="cd-main">${pad(h)}:${pad(m)}:${pad(s)}</div><div class="cd-sub">today</div>`;
+    function fmtLeft(diff) {
+      if (diff <= 0) return 'passed';
+      const d = Math.floor(diff / DAY);
+      const h = Math.floor((diff % DAY) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      if (d > 0) return `${d}d ${pad(h)}:${pad(m)}:${pad(s)}`;
+      return `${pad(h)}:${pad(m)}:${pad(s)}<div class="sub">today</div>`;
     }
 
     function kstStr(when) {
-      const kst = new Date(when + 9*3600*1000);
-      const yy = kst.getUTCFullYear();
-      const mm = pad(kst.getUTCMonth()+1);
-      const dd = pad(kst.getUTCDate());
-      const hh = pad(kst.getUTCHours());
-      const mi = pad(kst.getUTCMinutes());
-      return `KST: ${yy}-${mm}-${dd} ${hh}:${mi}`;
+      const k = new Date(when + 9 * 3600000);
+      return `KST ${k.getUTCFullYear()}-${pad(k.getUTCMonth() + 1)}-${pad(k.getUTCDate())} ${pad(k.getUTCHours())}:${pad(k.getUTCMinutes())}`;
     }
 
     function render() {
-      const table = document.getElementById('table');
-      [...table.querySelectorAll('.row:not(.header)')].forEach(r => r.remove());
-
+      const list = document.getElementById('list');
       const now = Date.now();
       const items = DEADLINES
         .map(d => ({ ...d, diff: d.when - now }))
-        .sort((a,b) => {
-          const aPast = a.diff <= 0;
-          const bPast = b.diff <= 0;
-          if (aPast !== bPast) return aPast ? 1 : -1;
-          return a.when - b.when;
-        });
-
-      for (const item of items) {
-        const cls = classify(item.diff);
+        .sort((a, b) => ((a.diff <= 0) - (b.diff <= 0)) || (a.when - b.when));
+      for (const it of items) {
         const row = document.createElement('div');
-        row.className = `row ${cls}${item.estimated ? ' is-estimated' : ''}`;
-        row.dataset.when = item.when;
-
-        const datePrefix = item.estimated ? '~ ' : '';
-
+        row.className = `row ${classify(it.diff)}`;
+        row.dataset.when = it.when;
         row.innerHTML = `
-          <div class="conf">
-            <div class="conf-name"><a href="${item.confUrl}" target="_blank" rel="noopener">${item.conf} ${item.year}</a></div>
-            <div class="conf-meta">${item.confDates} · BK21+ IF ${item.bk}</div>
+          <div>
+            <div class="name"><a href="${it.confUrl}" target="_blank" rel="noopener">${it.conf} ${it.year}</a></div>
+            <div class="desc">${it.desc}</div>
+            <div class="memo" lang="ko">${it.memo}</div>
+            <div class="meta">${it.confDates} · BK21+ IF ${it.bk}</div>
           </div>
           <div>
-            <div class="event-dates">${datePrefix}${item.dateStr}</div>
-            <div class="event-local">${kstStr(item.when)}</div>
-            ${item.estimated ? `<div class="event-note">est. from previous year</div>` : ''}
+            <div class="date">${it.estimated ? '~ ' : ''}${it.dateStr}</div>
+            <div class="kst">${kstStr(it.when)}</div>
+            ${it.estimated ? '<span class="tag">est.</span>' : ''}
           </div>
-          <div class="countdown">${fmtCountdown(item.diff)}</div>
-        `;
-        table.appendChild(row);
+          <div class="countdown">${fmtLeft(it.diff)}</div>`;
+        list.appendChild(row);
       }
     }
 
     function tick() {
       const now = Date.now();
-      document.querySelectorAll('.row:not(.header)').forEach(row => {
-        const when = Number(row.dataset.when);
-        const diff = when - now;
-        const cdEl = row.querySelector('.countdown');
-        cdEl.innerHTML = fmtCountdown(diff);
-        const cls = classify(diff);
-        row.classList.remove('urgent','soon','later','passed');
-        if (cls) row.classList.add(cls);
+      document.querySelectorAll('.row[data-when]').forEach(row => {
+        const diff = Number(row.dataset.when) - now;
+        row.querySelector('.countdown').innerHTML = fmtLeft(diff);
+        row.classList.remove('urgent', 'soon', 'passed');
+        const c = classify(diff);
+        if (c) row.classList.add(c);
       });
-      requestAnimationFrame(tick);
-    }
-
-    function updateNow() {
       const fmt = new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'Asia/Seoul',
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-        hour12: false,
+        timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
       });
-      document.getElementById('now').textContent = `Now (KST): ${fmt.format(new Date())}`;
+      document.getElementById('now').textContent = `Now ${fmt.format(new Date())} KST`;
     }
 
-    updateNow();
-    setInterval(updateNow, 1000);
     render();
     tick();
+    setInterval(tick, 1000);
   </script>
 </body>
 </html>
