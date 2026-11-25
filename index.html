@@ -71,7 +71,6 @@
     .name a { text-decoration: none; border-bottom: 1px solid var(--line); }
     .name a:hover { border-bottom-color: var(--muted); }
     .desc { font-size: 0.88rem; margin-top: 2px; }
-    .memo { font-size: 0.84rem; color: var(--muted); margin-top: 2px; }
     .meta { color: var(--faint); font-size: 0.76rem; margin-top: 4px; }
 
     .date { font: 500 0.88rem/1.5 var(--mono); }
@@ -144,13 +143,11 @@
 
     // Venues with a BK21+ IF in Pusnow's list of top CS conferences. For a venue whose last deadline has
     // passed, the next edition's deadline is shown, estimated from the previous one until its CFP is out.
-    // desc: what the venue is. memo: the venue's field in a short Korean phrase.
-    // Checked on 2026-11-25.
+    // desc: what the venue is. Checked on 2026-11-25.
     const DEADLINES = [
       {
         conf: 'MobiSys', year: '2027', bk: 3,
         desc: 'Mobile systems, applications and services (ACM SIGMOBILE)',
-        memo: '모바일 시스템 관련 학회',
         confUrl: 'https://www.sigmobile.org/mobisys/2027/',
         confDates: 'Jun 21–25, 2027 · Ho Chi Minh City, Vietnam',
         when: aoe('2026-12-04'), dateStr: 'Dec 4, 2026 AoE',
@@ -158,7 +155,6 @@
       {
         conf: 'OSDI', year: '2027', bk: 4,
         desc: 'Operating systems design and implementation (USENIX)',
-        memo: 'OS·시스템 분야 학회',
         confUrl: 'https://www.usenix.org/conference/osdi27',
         confDates: 'Jul 7–9, 2027 · Baltimore, MD',
         when: est559pm('2026-12-08'), dateStr: 'Dec 8, 2026 17:59 EST',
@@ -166,7 +162,6 @@
       {
         conf: 'ATC', year: '2027', bk: 3,
         desc: 'Practical computer systems (ACM SIGOPS, successor to USENIX ATC)',
-        memo: '실용 시스템 분야 학회',
         confUrl: 'https://atc.sigops.org/2027/',
         confDates: 'Jun 28 – Jul 1, 2027 · Rennes, France',
         when: aoe('2027-01-19'), dateStr: 'Jan 19, 2027 AoE',
@@ -174,7 +169,6 @@
       {
         conf: 'MobiCom', year: '2027 (winter)', bk: 4,
         desc: 'Mobile computing and wireless networking (ACM SIGMOBILE)',
-        memo: '모바일 시스템 관련 학회',
         confUrl: 'https://sigmobile.org/mobicom/2027/',
         confDates: '2027 · TBA',
         when: aoe('2027-03-12'), dateStr: 'Mar 12, 2027 AoE', estimated: true,
@@ -182,7 +176,6 @@
       {
         conf: 'EMSOFT', year: '2027', bk: 2,
         desc: 'Embedded software and real-time embedded systems (ESWEEK)',
-        memo: '임베디드 소프트웨어·실시간 임베디드 시스템 학회',
         confUrl: 'https://esweek.org/',
         confDates: 'Oct 10–15, 2027 · Long Beach, CA',
         when: aoe('2027-03-30'), dateStr: 'Mar 30, 2027 AoE', estimated: true,
@@ -190,7 +183,6 @@
       {
         conf: 'SOSP', year: '2027', bk: 4,
         desc: 'Operating systems principles (ACM SIGOPS)',
-        memo: 'OS·시스템 분야 학회',
         confUrl: 'https://sigops.org/s/conferences/sosp/',
         confDates: '2027 · TBA',
         when: aoe('2027-03-31'), dateStr: 'Mar 31, 2027 AoE', estimated: true,
@@ -198,7 +190,6 @@
       {
         conf: 'ASPLOS', year: '2028 (April cycle)', bk: 4,
         desc: 'Architecture, programming languages and operating systems',
-        memo: '아키텍처·프로그래밍 언어·OS 교차 분야 학회',
         confUrl: 'https://www.asplos-conference.org/',
         confDates: '2028 · TBA',
         when: aoe('2027-04-14'), dateStr: 'Apr 14, 2027 AoE', estimated: true,
@@ -206,7 +197,6 @@
       {
         conf: 'EuroSys', year: '2028 (spring)', bk: 2,
         desc: 'Computer systems research (ACM SIGOPS EuroSys)',
-        memo: '유럽 기반 시스템 분야 학회',
         confUrl: 'https://www.eurosys.org/',
         confDates: '2028 · TBA',
         when: aoe('2027-05-13'), dateStr: 'May 13, 2027 AoE', estimated: true,
@@ -214,7 +204,6 @@
       {
         conf: 'RTSS', year: '2027', bk: 4,
         desc: 'Real-time systems: scheduling, timing analysis, real-time OS (IEEE)',
-        memo: '실시간 시스템 분야 학회',
         confUrl: 'https://2026.rtss.org/',
         confDates: 'Dec 2027 · TBA',
         when: aoe('2027-05-25'), dateStr: 'May 25, 2027 AoE', estimated: true,
@@ -222,7 +211,6 @@
       {
         conf: 'SenSys', year: '2028 (first deadline)', bk: 3,
         desc: 'Embedded networked sensing and IoT systems (ACM)',
-        memo: '센서·IoT 시스템 분야 학회',
         confUrl: 'https://sensys.acm.org/',
         confDates: 'May 2028 · CPS-IoT Week · TBA',
         when: aoe('2027-06-04'), dateStr: 'Jun 4, 2027 AoE', estimated: true,
@@ -230,7 +218,6 @@
       {
         conf: 'RTAS', year: '2028', bk: 2,
         desc: 'Real-time and embedded technology and applications (IEEE)',
-        memo: '실시간·임베디드 시스템 응용 분야 학회',
         confUrl: 'https://2027.rtas.org/',
         confDates: 'May 2028 · CPS-IoT Week · TBA',
         when: aoe('2027-11-04'), dateStr: 'Nov 4, 2027 AoE', estimated: true,
@@ -238,7 +225,6 @@
       {
         conf: 'DAC', year: '2028', bk: 3,
         desc: 'Design automation for chips and electronic systems',
-        memo: '설계 자동화(EDA) 분야 학회',
         confUrl: 'https://dac.com/',
         confDates: 'Jun 24–30, 2028 · San Jose, CA',
         when: pst5pm('2027-11-17'), dateStr: 'Nov 17, 2027 17:00 PST', estimated: true,
@@ -284,7 +270,6 @@
           <div>
             <div class="name"><a href="${it.confUrl}" target="_blank" rel="noopener">${it.conf} ${it.year}</a></div>
             <div class="desc">${it.desc}</div>
-            <div class="memo" lang="ko">${it.memo}</div>
             <div class="meta">${it.confDates} · BK21+ IF ${it.bk}</div>
           </div>
           <div>
