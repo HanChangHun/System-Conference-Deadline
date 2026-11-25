@@ -95,7 +95,23 @@
     footer .copy { color: var(--faint); margin-top: 14px; }
 
     /* Single-deadline view */
-    .big { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: 24px; }
+    /* Always dark, like a display screen. Static slate-teal gradient with soft glows, no animation. */
+    .big {
+      --ink: #E8EDF2;
+      --muted: rgba(232, 237, 242, 0.68);
+      --faint: rgba(232, 237, 242, 0.46);
+      --line: rgba(232, 237, 242, 0.22);
+      --soon-ink: #F0C66E;
+      --urgent-ink: #F4A9A5;
+      --est-bg: rgba(156, 203, 240, 0.16);  --est-ink: #A9D2F2;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 70% 55% at 12% 0%, rgba(255, 255, 255, 0.08), transparent 70%),
+        radial-gradient(ellipse 60% 55% at 92% 100%, rgba(72, 170, 180, 0.28), transparent 70%),
+        linear-gradient(135deg, #0E1B26 0%, #1B3445 55%, #2A5266 100%);
+      min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding: 24px;
+    }
+    body.big-mode { background: #1F3A4A; }
     .back { align-self: flex-start; font-size: 0.85rem; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
     .back:hover { border-bottom-color: var(--muted); }
     .big-inner { margin: auto; width: 100%; min-width: 0; max-width: 960px; text-align: center; padding: 32px 0 48px; }
@@ -399,6 +415,7 @@
         $('big').hidden = true;
         $('wrap').hidden = false;
         document.title = LIST_TITLE;
+        document.body.classList.remove('big-mode');
         if (wasBig) window.scrollTo(0, listScroll);
         return;
       }
@@ -406,6 +423,7 @@
       current = entry;
       $('wrap').hidden = true;
       $('big').hidden = false;
+      document.body.classList.add('big-mode');
       document.title = `${entry.conf} ${entry.year} paper deadline`;
       $('b-name').textContent = `${entry.conf} ${entry.year}`;
       $('b-desc').textContent = entry.desc;
